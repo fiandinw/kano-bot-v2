@@ -1,5 +1,5 @@
 "use strict";
-require("dotenv").config();
+//require("dotenv").config();
 const getProfile = require("./utils/getProfile");
 const lovecalc = require("./utils/lovecalc");
 const replyAnilist = require("./utils/replyAnilist");
@@ -175,7 +175,7 @@ Commands:
 }
 
 // listen on port
-const port = 3000;
+const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`listening on ${port}`);
 });

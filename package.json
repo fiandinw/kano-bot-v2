@@ -14,6 +14,8 @@
     "@line/bot-sdk": "^7.5.2",
     "dotenv": "^16.0.3",
     "express": "^4.18.1",
+    "localtunnel": "^2.0.2",
+    "ngrok": "^4.3.3",
     "node-fetch-commonjs": "^3.2.4"
   }
 }

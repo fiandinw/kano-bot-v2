@@ -1,5 +1,7 @@
 "use strict";
 require("dotenv").config();
+const ngrok = require("ngrok");
+const localtunnel = require("localtunnel");
 const getProfile = require("./utils/getProfile");
 const lovecalc = require("./utils/lovecalc");
 const replyAnilist = require("./utils/replyAnilist");
@@ -178,8 +180,28 @@ Commands:
   }
 }
 
+// (async function () {
+//   const url = await ngrok.connect();
+//   console.log(url);
+// })();
+
+// (async () => {
+//   const tunnel = await localtunnel({
+//     port: 80,
+//     subdomain: "kano-bot-v2-fiandinw",
+//   });
+
+//   // the assigned public url for your tunnel
+//   // i.e. https://abcdefgjhij.localtunnel.me
+//   console.log(tunnel.url);
+
+//   tunnel.on("close", () => {
+//     // tunnels are closed
+//   });
+// })();
+
 // listen on port
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 80;
 app.listen(port, () => {
   console.log(`listening on ${port}`);
 });

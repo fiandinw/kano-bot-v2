@@ -1,5 +1,5 @@
 "use strict";
-//require("dotenv").config();
+require("dotenv").config();
 const getProfile = require("./utils/getProfile");
 const lovecalc = require("./utils/lovecalc");
 const replyAnilist = require("./utils/replyAnilist");

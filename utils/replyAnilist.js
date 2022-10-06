@@ -54,7 +54,7 @@ module.exports = function replyAnilist(
               {
                 type: "message",
                 label: "Details",
-                text: `!anilist ${el.siteUrl}`,
+                text: `${el.siteUrl}`,
               },
             ],
           })),
@@ -76,7 +76,7 @@ module.exports = function replyAnilist(
             action: {
               type: "message",
               label: el.name.full.substring(0, 10) + "..",
-              text: `!anilist ${el.siteUrl}`,
+              text: `${el.siteUrl}`,
             },
           })),
         },

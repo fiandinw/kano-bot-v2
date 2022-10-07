@@ -20,7 +20,7 @@ module.exports = function replyAnilist(
         text: `!${reqCommand} ${reqQuery} !${Number(reqPage) + 1}`,
       },
       actions: [
-        {
+        Number(reqPage) - 1 == 0 && {
           type: "message",
           label: "Back",
           text: `!${reqCommand} ${reqQuery} !${Number(reqPage) - 1}`,
@@ -34,7 +34,7 @@ module.exports = function replyAnilist(
     },
   };
 
-  const replyCarouselMedia = (arr) => {
+  const replyCarouselMedia = (arr, pages) => {
     return client.replyMessage(event.replyToken, [
       {
         type: "template",
@@ -60,11 +60,11 @@ module.exports = function replyAnilist(
           })),
         },
       },
-      paginationTemplate,
+      pages != 1 && paginationTemplate,
     ]);
   };
 
-  const replyCarouselImage = (arr) => {
+  const replyCarouselImage = (arr, pages) => {
     return client.replyMessage(event.replyToken, [
       {
         type: "template",
@@ -81,7 +81,7 @@ module.exports = function replyAnilist(
           })),
         },
       },
-      paginationTemplate,
+      pages != 1 && paginationTemplate,
     ]);
   };
 
@@ -90,7 +90,7 @@ module.exports = function replyAnilist(
     case "manga":
       anilist(reqQuery, reqCommand, reqPage, (res) => {
         if (res.data.Page.media.length !== 0) {
-          replyCarouselMedia(res.data.Page.media);
+          replyCarouselMedia(res.data.Page.media, res.data.Page.pageInfo.total);
         } else {
           replyText("Gak Ketemu...");
         }
@@ -99,7 +99,10 @@ module.exports = function replyAnilist(
     case "characters":
       anilist(reqQuery, reqCommand, reqPage, (res) => {
         if (res.data.Page.characters.length !== 0) {
-          replyCarouselImage(res.data.Page.characters);
+          replyCarouselImage(
+            res.data.Page.characters,
+            res.data.Page.pageInfo.total
+          );
         } else {
           replyText("Gak Ketemu...");
         }
@@ -108,7 +111,7 @@ module.exports = function replyAnilist(
     case "staff":
       anilist(reqQuery, reqCommand, reqPage, (res) => {
         if (res.data.Page.staff.length !== 0) {
-          replyCarouselImage(res.data.Page.staff);
+          replyCarouselImage(res.data.Page.staff, res.data.Page.pageInfo.total);
         } else {
           replyText("Gak Ketemu...");
         }

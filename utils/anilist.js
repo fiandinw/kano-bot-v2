@@ -6,6 +6,9 @@ module.exports = function anilist(q, type, page, callback) {
     anime: `
     query ($var: String) { # Define which variables will be used in the query (id)
       Page (page: ${page || 1}, perPage: 10) {
+        pageInfo{
+          total
+        }
         media(search: $var, type: ANIME) {
           id,
           title{
@@ -24,6 +27,9 @@ module.exports = function anilist(q, type, page, callback) {
     manga: `
     query ($var: String) { # Define which variables will be used in the query (id)
       Page (page: ${page || 1}, perPage: 10) {
+        pageInfo{
+          total
+        }
         media(search: $var, type: MANGA) {
           id,
           title{
@@ -42,6 +48,9 @@ module.exports = function anilist(q, type, page, callback) {
     characters: `
   query ($var: String) {
     Page(page: ${page || 1}, perPage: 10) {
+      pageInfo{
+        total
+      }
       characters(search: $var) {
         id
         name {
@@ -58,6 +67,9 @@ module.exports = function anilist(q, type, page, callback) {
   `,
     character: `query ($var: String) {
     Page(page: ${page || 1}, perPage: 10) {
+      pageInfo{
+        total
+      }
       characters(search: $var) {
         id
         name {
@@ -81,6 +93,9 @@ module.exports = function anilist(q, type, page, callback) {
   }`,
     staff: `query ($var: String) {
     Page(page: ${page || 1}, perPage:10){
+      pageInfo{
+        total
+      }
       staff(search: $var){
         name {
           full

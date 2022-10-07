@@ -84,7 +84,7 @@ function handleEvent(event) {
       //   replyAnilist(client, event, reqCommand, reqQuery, reqPage, replyText);
       //   break;
       case "luck":
-        getProfile(event.source.userId, (res) => {
+        getProfile(event.source, (res) => {
           replyText(
             `Keberuntungan ${res.displayName} ${Math.floor(
               Math.random() * 101
@@ -132,7 +132,7 @@ function handleEvent(event) {
   } else {
     switch (reqTrim) {
       case "kano":
-        getProfile(event.source.userId, (res) => {
+        getProfile(event.source, (res) => {
           replyText(`Hi ${res.displayName} !\n
 Commands:
 !anime, !manga, !chara, !seiyuu, !ynm, !apakah, !luck,

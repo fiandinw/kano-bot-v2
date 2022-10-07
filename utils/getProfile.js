@@ -1,18 +1,28 @@
 const line = require("@line/bot-sdk");
 
-module.exports = function getProfile(userId, callback) {
+module.exports = function getProfile(source, callback) {
   const client = new line.Client({
     channelAccessToken: process.env.CAT,
   });
-
-  client
-    .getProfile(userId)
-    .then((res) => {
-      callback(res);
-    })
-    .catch(() => {
-      return Promise.resolve(null);
-    });
+  if (source.groupId) {
+    client
+      .getGroupMemberProfile(source.groupId, source.userId)
+      .then((res) => {
+        callback(res);
+      })
+      .catch(() => {
+        return Promise.resolve(null);
+      });
+  } else {
+    client
+      .getProfile(source.userId)
+      .then((res) => {
+        callback(res);
+      })
+      .catch(() => {
+        return Promise.resolve(null);
+      });
+  }
   // .then((profile) => {
   //   console.log(profile.displayName);
   //   console.log(profile.userId);

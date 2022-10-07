@@ -20,7 +20,7 @@ module.exports = function replyAnilist(
         text: `!${reqCommand} ${reqQuery} !${Number(reqPage) + 1}`,
       },
       actions: [
-        Number(reqPage) - 1 == 0 && {
+        {
           type: "message",
           label: "Back",
           text: `!${reqCommand} ${reqQuery} !${Number(reqPage) - 1}`,
@@ -60,7 +60,7 @@ module.exports = function replyAnilist(
           })),
         },
       },
-      pages != 1 && paginationTemplate,
+      paginationTemplate,
     ]);
   };
 
@@ -81,7 +81,7 @@ module.exports = function replyAnilist(
           })),
         },
       },
-      pages != 1 && paginationTemplate,
+      paginationTemplate,
     ]);
   };
 

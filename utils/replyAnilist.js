@@ -7,35 +7,43 @@ module.exports = function replyAnilist(
   reqPage,
   replyText
 ) {
-  const paginationTemplate = {
-    type: "template",
-    altText: "This is a buttons template",
-    template: {
-      type: "buttons",
-      text:
-        (reqCommand + " " + reqQuery).substring(0, 100) + " page " + reqPage,
-      defaultAction: {
-        type: "message",
-        label: "next",
-        text: `!${reqCommand} ${reqQuery} !${Number(reqPage) + 1}`,
+  const paginationTemplate = (hasNextPage) => {
+    const tempArr = [];
+    const nextTemp = {
+      type: "message",
+      label: "Next",
+      text: `!${reqCommand} ${reqQuery} !${Number(reqPage) + 1}`,
+    };
+    const prevTemp = {
+      type: "message",
+      label: "Back",
+      text: `!${reqCommand} ${reqQuery} !${Number(reqPage) - 1}`,
+    };
+    if (reqPage != 1) {
+      tempArr.push(prevTemp);
+    }
+    if (hasNextPage) {
+      tempArr.push(nextTemp);
+    }
+    return {
+      type: "template",
+      altText: "Anilist Pagination",
+      template: {
+        type: "buttons",
+        text:
+          (reqCommand + " " + reqQuery).substring(0, 100) + " page " + reqPage,
+        defaultAction: {
+          type: "message",
+          label: "next",
+          text: `!${reqCommand} ${reqQuery} !${Number(reqPage)}`,
+        },
+        actions: tempArr,
       },
-      actions: [
-        {
-          type: "message",
-          label: "Back",
-          text: `!${reqCommand} ${reqQuery} !${Number(reqPage) - 1}`,
-        },
-        {
-          type: "message",
-          label: "Next",
-          text: `!${reqCommand} ${reqQuery} !${Number(reqPage) + 1}`,
-        },
-      ],
-    },
+    };
   };
 
   const replyCarouselMedia = (arr, pages) => {
-    return client.replyMessage(event.replyToken, [
+    const tempArr = [
       {
         type: "template",
         altText: "Anilist",
@@ -60,12 +68,15 @@ module.exports = function replyAnilist(
           })),
         },
       },
-      ...[pages != 1 && paginationTemplate],
-    ]);
+    ];
+    if (pages || reqPage != 1) {
+      tempArr.push(paginationTemplate(pages));
+    }
+    return client.replyMessage(event.replyToken, tempArr);
   };
 
   const replyCarouselImage = (arr, pages) => {
-    return client.replyMessage(event.replyToken, [
+    const tempArr = [
       {
         type: "template",
         altText: "Anilist",
@@ -81,8 +92,11 @@ module.exports = function replyAnilist(
           })),
         },
       },
-      ...[pages != 1 && paginationTemplate],
-    ]);
+    ];
+    if (pages || reqPage != 1) {
+      tempArr.push(paginationTemplate(pages));
+    }
+    return client.replyMessage(event.replyToken, tempArr);
   };
 
   switch (reqCommand) {
@@ -90,7 +104,10 @@ module.exports = function replyAnilist(
     case "manga":
       anilist(reqQuery, reqCommand, reqPage, (res) => {
         if (res.data.Page.media.length !== 0) {
-          replyCarouselMedia(res.data.Page.media, res.data.Page.pageInfo.total);
+          replyCarouselMedia(
+            res.data.Page.media,
+            res.data.Page.pageInfo.hasNextPage
+          );
         } else {
           replyText("Gak Ketemu...");
         }
@@ -101,7 +118,7 @@ module.exports = function replyAnilist(
         if (res.data.Page.characters.length !== 0) {
           replyCarouselImage(
             res.data.Page.characters,
-            res.data.Page.pageInfo.total
+            res.data.Page.pageInfo.hasNextPage
           );
         } else {
           replyText("Gak Ketemu...");
@@ -111,7 +128,10 @@ module.exports = function replyAnilist(
     case "staff":
       anilist(reqQuery, reqCommand, reqPage, (res) => {
         if (res.data.Page.staff.length !== 0) {
-          replyCarouselImage(res.data.Page.staff, res.data.Page.pageInfo.total);
+          replyCarouselImage(
+            res.data.Page.staff,
+            res.data.Page.pageInfo.hasNextPage
+          );
         } else {
           replyText("Gak Ketemu...");
         }

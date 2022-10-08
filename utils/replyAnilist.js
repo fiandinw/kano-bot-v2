@@ -60,7 +60,7 @@ module.exports = function replyAnilist(
           })),
         },
       },
-      paginationTemplate,
+      ...[pages != 1 && paginationTemplate],
     ]);
   };
 
@@ -81,7 +81,7 @@ module.exports = function replyAnilist(
           })),
         },
       },
-      paginationTemplate,
+      ...[pages != 1 && paginationTemplate],
     ]);
   };
 
